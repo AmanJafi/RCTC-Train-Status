@@ -37,17 +37,21 @@ def getInfo(trainNum):
 
 def search(stationName):
   global stations
+  resstr=""
+  flag = False
   for i in stations:
     if stationName.lower() in i.name.lower():
-      return (f"Found {i.name.capitalize()}: {i.timeOfArrival} for {i.haltTime}")
+      resstr+= (f"Found {i.name.capitalize()}: {i.timeOfArrival} for {i.haltTime}\n")
+      flag=True
+  if not flag:
+    return "Not Found"
   else:
-    return "Not found"
+    return resstr
 
 
 # #the train name 
 # print(soup.find_all("h3")[0].text.strip()+"\n\n")
 
-# search(input())
 
 with gr.Blocks() as demo:
     gr.Markdown("Train Finder")
@@ -56,7 +60,7 @@ with gr.Blocks() as demo:
     submit_btn = gr.Button(value="Submit")
     with gr.Column(visible=False) as StationManager:
       stat_name = gr.Text(label="Station Name")
-      output = gr.Text(label="Station Details")
+      output = gr.TextArea(label="Station Details")
       
     def hide_manager():
         return gr.Column(visible=False), "", "", ""
